@@ -1,0 +1,34 @@
+// app/[lang]/page.tsx
+import { getDictionary } from "@/app/i18n/dictionary";
+import { getValidatedLocale } from "@/app/i18n/handleParams";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+
+type Props = {
+  params: {
+    lang: string;
+  };
+};
+
+export default async function Home(props: Props) {
+  // Validar o locale sem usar await em params
+  const locale = getValidatedLocale(props.params.lang);
+  const dict = await getDictionary(locale);
+
+  return (
+    <main className="container mx-auto px-4 py-12">
+      <div className="flex justify-end mb-4">
+        <LanguageSwitcher />
+      </div>
+
+      <h1 className="text-5xl font-display font-bold mb-6">
+        {dict.home.title}
+      </h1>
+
+      <p className="text-xl mb-8">{dict.home.subtitle}</p>
+
+      <button className="bg-indigo-600 text-white px-8 py-3 rounded-lg">
+        {dict.home.cta}
+      </button>
+    </main>
+  );
+}
